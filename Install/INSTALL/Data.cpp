@@ -154,7 +154,16 @@ void CData::DetectDrives()
 	for (Index = 0; Index < Count; ++Index)
 		TextUI.OutputStr("HD%d: %s access\n",Index,DiskAccess.LBAAccessAvail(0x80 | Index) == 0 ? "LBA" : "conventional");
 	LastDrive = GetDriveCount();
-	TextUI.OutputStr("Available drives: [C,%c]\n",('A' - 1) + LastDrive);
+	char s[256];
+	int i;
+	int j = 0;
+	s[j++] = '[';
+	for (i = 2; i < LastDrive; i++) {
+		s[j++] = ('A' + (char) i);
+	}
+	s[j++] = ']';
+	s[j++] = '\0';
+	TextUI.OutputStr("Available HDD drives: %s\n", s);
 	TextUI.OutputStr("Reading disk structure...");
 	PartList.ReadStructure();
 	TextUI.OutputStr("\n");

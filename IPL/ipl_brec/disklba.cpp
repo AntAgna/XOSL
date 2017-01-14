@@ -13,16 +13,16 @@
 
 
 int Drive;
-long StartSector;
+unsigned long StartSector;
 
 
-void DiskMap(int DriveToUse, long StartSectorToUse)
+void DiskMap(int DriveToUse, unsigned long StartSectorToUse)
 {
 	Drive = DriveToUse;
 	StartSector = StartSectorToUse;
 }
 
-void DiskRead(long Sector, void *Buffer, int Count)
+void DiskRead(unsigned long Sector, void *Buffer, int Count)
 {
 	TLBAPacket LBAPacket;
 

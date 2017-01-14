@@ -2,10 +2,10 @@
 # Keyboard library specific stuff
 #
 
-COMPILE_OBJ=keyboard.obj key.obj keys_us.obj keys_fr.obj
+COMPILE_OBJ=keyboard.obj key.obj keys_us.obj keys_fr.obj keys_gr.obj
 LIB_NAME=keyboard.lib
 LIST_FILE=keyboard.lst
-LIB_OBJ=-+keyboard.obj -+key.obj -+keys_us.obj -+keys_fr.obj
+LIB_OBJ=-+keyboard.obj -+key.obj -+keys_us.obj -+keys_fr.obj -+keys_gr.obj
 
 #
 # Generic library stuff

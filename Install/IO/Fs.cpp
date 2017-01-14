@@ -19,7 +19,7 @@ CFileSystem::~CFileSystem()
 {
 }
 
-int CFileSystem::Mount(int Drive, long StartSector)
+int CFileSystem::Mount(int Drive, unsigned long StartSector)
 {
 	return Disk.Map(Drive,StartSector);
 }

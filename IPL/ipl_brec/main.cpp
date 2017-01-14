@@ -66,7 +66,7 @@ void LoadXoslLoad()
 // Sector 0 = boot record, sector 1 = FAT, sector 2,3 = root dir, sector 4 = data start (cluster 2)
 {
 	long XoslLoadCluster;
-	long XoslLoadSector;
+	unsigned long XoslLoadSector;
 
 	XoslLoadCluster = LocateXoslLoad();
 	

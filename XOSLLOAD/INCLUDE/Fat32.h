@@ -70,7 +70,7 @@ class CFAT32: public CFileSystem {
 	public:
 		CFAT32();
 		~CFAT32();
-		int Mount(int Drive, long StartSector);
+		int Mount(int Drive, unsigned long StartSector);
 		unsigned short ReadFile(const char *FileName, void *Buffer);
 	private:
 		int Locate(const char *FileName, TFAT32DirEntry &Entry);

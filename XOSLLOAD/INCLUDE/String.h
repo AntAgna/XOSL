@@ -16,7 +16,9 @@
 #define DEC 10
 #define HEX 16
 
-char *itoa(long Value, char *Str, int Base);
+char *itoa(int Value, char *Str, int Base);
+char *ltoa(long Value, char *Str, int Base);
+char *ultoa(unsigned long Value, char *Str, int Base);
 
 
 #endif

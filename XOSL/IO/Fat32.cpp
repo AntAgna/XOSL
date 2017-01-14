@@ -28,7 +28,7 @@ CFAT32::~CFAT32()
 	delete FAT;
 }
 
-int CFAT32::Mount(int Drive, long StartSector)
+int CFAT32::Mount(int Drive, unsigned long StartSector)
 {
 	int Status;
 	long FATSize;
@@ -75,7 +75,7 @@ unsigned short CFAT32::ReadFile(const char *FileName, void *Buffer)
 	return Entry.FileSize;
 }
 
-int CFAT32::WriteFile(const char *FileName, const void *Buffer)
+int CFAT32::WriteFile(const char *FileName, void *Buffer)
 {
 	long Cluster;
 	TFAT32DirEntry Entry;
@@ -148,7 +148,7 @@ void CFAT32::ReadCluster(long Cluster, void *Buffer)
 	Disk->Read(Sector,Buffer,BootSector.ClusterSize);
 }
 
-void CFAT32::WriteCluster(long Cluster, const void *Buffer)
+void CFAT32::WriteCluster(long Cluster, void *Buffer)
 {
 	unsigned long Sector;
 

@@ -14,13 +14,13 @@
 
 void GetDriveInfo(int Drive);
 void ConvRead(unsigned short SectCyl,unsigned short DrvHead, void *Buffer, int Count);
-void Sector2CHS(long RSector, unsigned short &SectCyl, unsigned short &DrvHead);
+void Sector2CHS(unsigned long RSector, unsigned short &SectCyl, unsigned short &DrvHead);
 
 
 extern long DrvHeadCount;
 extern long DrvSectorCount;
 extern int Drive;
-extern long StartSector;
+extern unsigned long StartSector;
 
 
 #endif

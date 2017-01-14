@@ -103,7 +103,7 @@ int CFsCreator::InitBootRecord(unsigned short Drive, unsigned long Sector)
 	BootRecord.Drive = Drive;
 	BootRecord.Signature = 0x29;
 	BootRecord.SerialNo = 0x4c534f58;
-	MemCopy(BootRecord.Label,"XOSL114    ",11);
+	MemCopy(BootRecord.Label,"XOSL117    ",11);
 	MemCopy(BootRecord.FSID,"FAT16   ",8);
 	BootRecord.MagicNumber = 0x534f;
 	TextUI.OutputStr("done\n");
@@ -204,7 +204,7 @@ void CFsCreator::AddFatEntries(long FileSize)
 
 int CFsCreator::BackupPartition(int Drive, unsigned long Sector)
 {
-	long ImageSize;
+	unsigned long ImageSize;
 	int TransferCount;
 	int Index;
 	CDisk Disk;

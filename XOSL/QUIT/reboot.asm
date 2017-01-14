@@ -25,24 +25,27 @@
 ; Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 ; (or try http://www.gnu.org/licenses/ at http://www.gnu.org).
 
-                .model  compact
-                .386p
-                .code
+	.model  large
+	.386p
 
-                public  @CApplication@Reboot$qv
+	.code
 
-;CApplication::Reboot();
-@CApplication@Reboot$qv proc c
+	public  @CQuit@RebootASM$qv
 
-			mov ah,0dh	; DOS filesystem reset (never fails)
-			int 21h
+@CQuit@RebootASM$qv proc
 
-			mov dx,80h	; harddisks (and floppies, if any)
-			xor ax,ax	; reset disks
-			int 13h
+; Note: as this code does not run from a DOS environment, but from XOSL BIOS-only,
+; we must avoid all calls into any DOS (SW) interrupts...
 
-			mov cx,1	; wait 1 second
-			call countBar
+			; mov ah,0dh	; DOS filesystem reset (never fails)
+			; int 21h
+
+			; mov dx,80h	; harddisks (and floppies, if any)
+			; xor ax,ax	; reset disks
+			; int 13h
+
+			; mov cx,1	; wait 1 second
+			; call countBar
 
 			mov dx,3f2h	; floppy motor control
 			xor ax,ax
@@ -87,6 +90,6 @@
 			
 		bootpt	dw 0,0ffffh	; boot entry point is FFFF:0000
 	
-@CApplication@Reboot$qv endp
+@CQuit@RebootASM$qv endp
 
-			end
+	end

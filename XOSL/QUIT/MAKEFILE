@@ -2,10 +2,10 @@
 # Quit + Advanced Power Management library specific stuff
 #
 
-COMPILE_OBJ=quit.obj apm.obj apmif.obj
+COMPILE_OBJ=quit.obj apm.obj apmif.obj reboot.obj
 LIB_NAME=quit.lib
 LIST_FILE=quit.lst
-LIB_OBJ=-+quit.obj -+apm.obj -+apmif.obj
+LIB_OBJ=-+quit.obj -+apm.obj -+apmif.obj -+reboot.obj
 
 #
 # Generic library stuff

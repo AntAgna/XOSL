@@ -3,7 +3,7 @@
 #
 # NOTE: doesn't put starter.obj in misc.lib!
 
-COMPILE_OBJ=starter.obj int.obj weird.obj ctype.obj
+COMPILE_OBJ=starter.obj a20line.obj int.obj weird.obj ctype.obj
 LIB_NAME=misc.lib
 LIST_FILE=misc.lst
 LIB_OBJ=-+int.obj -+weird.obj -+ctype.obj

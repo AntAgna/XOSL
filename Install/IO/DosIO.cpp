@@ -14,6 +14,7 @@
 #include <string.h>
 #include <memory.h>
 
+unsigned long dummy_align = 0;
 char CDosFile::TransferBuffer[32768];
 
 

@@ -18,9 +18,9 @@
 #define DEC 10
 #define HEX 16
 
-const char *Version = "Extended Operating System Loader 1.1.5";
+const char *Version = "Extended Operating System Loader 1.1.7";
 const char *Prog = "XOSL INSTALL UTILITY";
-const char *Copyright = "Copyright (c) 1999/2000, Geurt Vos";
+const char *Copyright = "Copyright (c) 1999-2017, Geurt Vos";
 const char *StrInfoQuit = "Esc : Quit";
 const char *StrInfoSelect = "\x18 \x19 : Select Item";
 const char *StrInfoExec = "Enter     : Execute";
@@ -151,13 +151,22 @@ void CTextUI::OutputStr(const char *format, ...)
 					case 'l':
 						if (format[1] == 'd') {
 							++format;
-							itoa(*(unsigned long *)argl++,buf,DEC);
+							ltoa(*(long *)argl++,buf,DEC);
+							argl +=2;
+							Output.PutStr(buf);
+							break;
+						}
+						if (format[1] == 'u') {
+							++format;
+							ultoa(*(unsigned long *)argl,buf,DEC);
+							argl +=2;
 							Output.PutStr(buf);
 							break;
 						}
 						if (format[1] == 'x') {
 							++format;
-							itoa(*(unsigned long *)argl++,buf,HEX);
+							ltoa(*(long *)argl,buf,HEX);
+							argl +=2;
 							Output.PutStr(buf);
 							break;
 						}

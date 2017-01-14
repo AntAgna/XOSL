@@ -21,7 +21,7 @@ class CFAT16: public CFileSystem {
 		~CFAT16();
 		int Mount(int Drive, long StartSector);
 		unsigned short ReadFile(const char *FileName, void *Buffer);
-		int WriteFile(const char *FileName, const void *Buffer);
+		int WriteFile(const char *FileName, void *Buffer);
 
 		void DosFileToRawFile(char *RawFile, const char *DosFile);
 
@@ -44,7 +44,7 @@ class CFAT16: public CFileSystem {
 
 		void GetNextCluster(unsigned short &Cluster);
 		void ReadCluster(unsigned short Cluster, void *Buffer);
-		void WriteCluster(unsigned short Cluster, const void *Buffer);
+		void WriteCluster(unsigned short Cluster, void *Buffer);
 
 
 		TBootFAT16 BootSector;

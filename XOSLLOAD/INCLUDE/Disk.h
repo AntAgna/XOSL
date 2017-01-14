@@ -27,22 +27,22 @@ class CDisk {
 
 		int DriveCount(int Fixed);
 
-		int Map(int Drive, long StartSector);
+		int Map(int Drive, unsigned long StartSector);
 
-		int Read(long Sector, void *Buffer, int Count);
-		int Write(long Sector, const void *Buffer, int Count);
-		int Verify(long Sector, int Count);
+		int Read(unsigned long Sector, void *Buffer, int Count);
+		int Write(unsigned long Sector, void *Buffer, int Count);
+		int Verify(unsigned long Sector, int Count);
 
 	private:
-		int Transfer(int Action, long Sector, void *Buffer, int Count);
-		void Sector2CHS(long RSector, unsigned short &SectCyl, unsigned short &DrvHead);
+		int Transfer(int Action, unsigned long Sector, void *Buffer, int Count);
+		void Sector2CHS(unsigned long RSector, unsigned short &SectCyl, unsigned short &DrvHead);
 
 		CDiskAccess DiskAccess;
 
 		int DrvHeadCount;
 		int DrvSectorCount;
 		int Drive;
-		long StartSector;
+		unsigned long StartSector;
 		int UseLBA;
 		int DiskMapped;
 };

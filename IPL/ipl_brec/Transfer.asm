@@ -22,7 +22,7 @@ Sector          dw      ?
 
                 public  @ConvRead$qususnvi
                 public  @GetDriveInfo$qi
-                public  @Sector2CHS$qlmust2
+                public  @Sector2CHS$qulmust2
 
 ;void ConvRead(unsigned short SectCyl,unsigned short DrvHead,
 ;             void *Buffer, int Count);
@@ -62,8 +62,8 @@ Sector          dw      ?
                 ret
                 endp
 
-;void Sector2CHS(long RSector, unsigned short &SectCyl, unsigned short &DrvHead)
-@Sector2CHS$qlmust2     proc c
+;void Sector2CHS(unsigned long RSector, unsigned short &SectCyl, unsigned short &DrvHead)
+@Sector2CHS$qulmust2     proc c
                 arg     @@RSector: dword
                 arg     @@SectCyl: dword, @@DrvHead: dword
 

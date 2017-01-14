@@ -53,7 +53,7 @@ class CFAT16: public CFileSystem {
 	public:
 		CFAT16();
 		~CFAT16();
-		int Mount(int Drive, long StartSector);
+		int Mount(int Drive, unsigned long StartSector);
 		unsigned short ReadFile(const char *FileName, void *Buffer);
 	private:
 		int Locate(const char *FileName, TFAT16DirEntry &Entry);

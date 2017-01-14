@@ -13,7 +13,7 @@
 
 #include <defs.h>
 
-#define Scratchpad ( (void *)0x90008000 )
+//#define Scratchpad ( (void *)0x90008000 )
 //#define Scratchpad ( (void *)0x00008000 )
 
 #define DISK_READ   0x0200

@@ -23,6 +23,7 @@ class CQuit {
 		void Reboot();
 		void Restart();
 	private:
+		static void RebootASM();
 		CMouse *Mouse;
 };
 

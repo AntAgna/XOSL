@@ -41,11 +41,11 @@ void CInstallMenus::InitMainMenu(CTextList::TListItemExecute MenuHandler, void *
 	
 	TextUI.ClearMenu();
 	TextUI.SetMenuTitle(" Main \xcd\xcd\xcd\xcd\xcd");
-	TextUI.AddMenuItem(0,"Install XOSL","Install Extended Operating System Loader 1.1.5",1);
-	TextUI.AddMenuItem(2,"Uninstall XOSL","Uninstall Extended Operating System Loader 1.1.5",1);
+	TextUI.AddMenuItem(0,"Install XOSL","Install Extended Operating System Loader 1.1.7",1);
+	TextUI.AddMenuItem(2,"Uninstall XOSL","Uninstall Extended Operating System Loader 1.1.7",1);
 	TextUI.AddMenuItem(4,"Restore XOSL","Make your system start XOSL again (typically after installing an OS)",1);
 
-	TextUI.AddMenuItem(6,"Exit install","Quit without installing Extended Operating System Loader 1.1.5",1);
+	TextUI.AddMenuItem(6,"Exit install","Quit without installing Extended Operating System Loader 1.1.7",1);
 	TextUI.SetItemIndex(0);
 	TextUI.RefreshMenu();
 }
@@ -56,8 +56,8 @@ void CInstallMenus::InitInstallMenu(CTextList::TListItemExecute MenuHandler, voi
 	
 	TextUI.ClearMenu();
 	TextUI.SetMenuTitle(" Install \xcd\xcd");
-	TextUI.AddMenuItem(0,"Install on a DOS drive","Install XOSL 1.1.5 on a DOS drive (FAT16/FAT32)",FatAvail);
-	TextUI.AddMenuItem(2,"Install on a dedicated partition","Install XOSL 1.1.5 on an existing dedicated partition",1);
+	TextUI.AddMenuItem(0,"Install on a DOS drive","Install XOSL 1.1.7 on a DOS drive (FAT16/FAT32)",FatAvail);
+	TextUI.AddMenuItem(2,"Install on a dedicated partition","Install XOSL 1.1.7 on an existing dedicated partition",1);
 	TextUI.AddMenuItem(6,"Return to main menu","Return to main menu",1);
 	TextUI.SetItemIndex(FatAvail ? 0 : 2);
 	TextUI.RefreshMenu();
@@ -69,8 +69,8 @@ void CInstallMenus::InitFixMbrMenu(CTextList::TListItemExecute MenuHandler, void
 	
 	TextUI.ClearMenu();
 	TextUI.SetMenuTitle(" Restore \xcd\xcd");
-	TextUI.AddMenuItem(0,"Restore on a DOS drive","Restore XOSL 1.1.5, installed on a DOS drive",FatAvail);
-	TextUI.AddMenuItem(2,"Restore on a dedicated partition","Restore XOSL 1.1.5, installed on a dedicated partition",1);
+	TextUI.AddMenuItem(0,"Restore on a DOS drive","Restore XOSL 1.1.7, installed on a DOS drive",FatAvail);
+	TextUI.AddMenuItem(2,"Restore on a dedicated partition","Restore XOSL 1.1.7, installed on a dedicated partition",1);
 	TextUI.AddMenuItem(6,"Return to main menu","Return to main menu",1);
 	TextUI.SetItemIndex(FatAvail ? 0 : 2);
 	TextUI.RefreshMenu();
@@ -82,8 +82,8 @@ void CInstallMenus::InitUninstallMenu(CTextList::TListItemExecute MenuHandler, v
 	
 	TextUI.ClearMenu();
 	TextUI.SetMenuTitle(" Uninstall ");
-	TextUI.AddMenuItem(0,"Uninstall off a DOS drive","Uninstall XOSL 1.1.5 off a DOS drive",FatAvail);
-	TextUI.AddMenuItem(2,"Uninstall off a dedicated partition","Uninstall XOSL 1.1.5 off a dedicated partition",1);
+	TextUI.AddMenuItem(0,"Uninstall off a DOS drive","Uninstall XOSL 1.1.7 off a DOS drive",FatAvail);
+	TextUI.AddMenuItem(2,"Uninstall off a dedicated partition","Uninstall XOSL 1.1.7 off a dedicated partition",1);
 	TextUI.AddMenuItem(6,"Return to main menu","Return to main menu",1);
 	TextUI.SetItemIndex(FatAvail ? 0 : 2);
 	TextUI.RefreshMenu();
@@ -101,15 +101,18 @@ void CInstallMenus::InitInstFatMenu(CTextList::TListItemExecute MenuHandler, voi
 	if (!DosDriveList)
 		CreateDosDriveList();
 
+	if (!DosDriveList)
+		return;
+	
 	TextUI.ConnectEventHandler(MenuHandler,HandlerClass);
 	TextUI.ClearMenu();
 	TextUI.AddMenuItem(0,"Video mode","Initial video mode",1,ModeCount,ModeNameList,1);
 	TextUI.AddMenuItem(1,"Mouse type","Initial mouse type",1,MouseTypeCount,MouseTypeNames,1);
 	TextUI.AddMenuItem(2,"Install on drive","Drive to install XOSL on",1,DosDriveCount,(const char **)DosDriveList,1);
-	TextUI.AddMenuItem(3,"Ranish Partition Manager","Install Ranish Partition Manager 2.38 beta 1.9 together with XOSL 1.1.5",1,2,YesNoList,1);
-	TextUI.AddMenuItem(4,"Smart Boot Manager","Install Smart Boot Manager 3.6.4 for CD-ROM booting support.",1,2,YesNoList,1);
+	TextUI.AddMenuItem(3,"Ranish Partition Manager","Install Ranish Partition Manager 2.44 (beta) together with XOSL 1.1.7",1,2,YesNoList,1);
+	TextUI.AddMenuItem(4,"Smart Boot Manager","Install Smart Boot Manager 3.7.1 for CD-ROM booting support.",1,2,YesNoList,1);
 
-	TextUI.AddMenuItem(6,"Start installation","Install Extended Operating System Loader 1.1.5",1);
+	TextUI.AddMenuItem(6,"Start installation","Install Extended Operating System Loader 1.1.7",1);
 	TextUI.AddMenuItem(8,"Return to install menu","Return to install menu",1);
 	TextUI.SetItemIndex(0);
 	TextUI.RefreshMenu();
@@ -131,10 +134,10 @@ void CInstallMenus::InitInstSepMenu(CTextList::TListItemExecute MenuHandler, voi
 	TextUI.ClearMenu();
 	TextUI.AddMenuItem(0,"Video mode","Initial video mode",1,ModeCount,ModeNameList,1);
 	TextUI.AddMenuItem(1,"Mouse type","Initial mouse type",1,MouseTypeCount,MouseTypeNames,1);
-	TextUI.AddMenuItem(2,"Ranish Partition Manager","Install Ranish Partition Manager 2.38 beta 1.9 together with XOSL 1.1.5",1,2,YesNoList,1);
-	TextUI.AddMenuItem(3,"Smart Boot Manager","Install Smart Boot Manager 3.6.4 for CD-ROM booting support.",1,2,YesNoList,1);
-	TextUI.AddMenuItem(4,"Drv Type System              Size ","Partition to install XOSL 1.1.5 on",1,PartNameCount,(const char **)PartNameList,0);
-	TextUI.AddMenuItem(10,"Start installation","Install Extended Operating System Loader 1.1.5",1);
+	TextUI.AddMenuItem(2,"Ranish Partition Manager","Install Ranish Partition Manager 2.44 (beta) together with XOSL 1.1.7",1,2,YesNoList,1);
+	TextUI.AddMenuItem(3,"Smart Boot Manager","Install Smart Boot Manager 3.7.1 for CD-ROM booting support.",1,2,YesNoList,1);
+	TextUI.AddMenuItem(4,"Drv Type System           Size ","Partition to install XOSL 1.1.7 on",1,PartNameCount,(const char **)PartNameList,0);
+	TextUI.AddMenuItem(10,"Start installation","Install Extended Operating System Loader 1.1.7",1);
 	TextUI.AddMenuItem(11,"Return to install menu","Return to install menu",1);
 	TextUI.SetItemIndex(0);
 	TextUI.RefreshMenu();
@@ -147,7 +150,7 @@ void CInstallMenus::InitErrorMenu(CTextList::TListItemExecute MenuHandler, void 
 	TextUI.ClearMenu();
 	TextUI.SetMenuTitle(" Error \xcd\xcd\xcd\xcd");
 	TextUI.AddMenuItem(0,"An error has occured!","",0);
-	TextUI.AddMenuItem(2,"Exit install","Quit without installing Extended Operating System Loader 1.1.5",1);
+	TextUI.AddMenuItem(2,"Exit install","Quit without installing Extended Operating System Loader 1.1.7",1);
 	TextUI.AddMenuItem(4,"Return to main menu","Return to main menu",1);
 	TextUI.SetItemIndex(2);
 	TextUI.RefreshMenu();
@@ -211,7 +214,7 @@ void CInstallMenus::InitUninstallSep(CTextList::TListItemExecute MenuHandler, vo
 
 	TextUI.ClearMenu();
 	TextUI.AddMenuItem(0,"Restore MBR","Restore the Master Boot Record with the original or default loader",1,2,MbrIplList,1);
-	TextUI.AddMenuItem(2,"Drv Type System              Size ","Partition XOSL is currently installed on",1,PartNameCount,(const char **)PartNameList,0);
+	TextUI.AddMenuItem(2,"Drv Type System           Size ","Partition XOSL is currently installed on",1,PartNameCount,(const char **)PartNameList,0);
 	TextUI.AddMenuItem(8,"Start uninstall","Uninstall Extended Operating System Loader",1);
 	TextUI.AddMenuItem(10,"Return to uninstall menu","Return to uninstall menu",1);
 	TextUI.SetItemIndex(0);
@@ -228,7 +231,7 @@ void CInstallMenus::InitFixMbrFat(CTextList::TListItemExecute MenuHandler, void 
 
 	TextUI.ClearMenu();
 	TextUI.AddMenuItem(0,"XOSL on drive","DOS drive XOSL is currently installed on",1,DosDriveCount,(const char **)DosDriveList,1);
-	TextUI.AddMenuItem(4,"Start restore","Restore XOSL 1.1.5",1);
+	TextUI.AddMenuItem(4,"Start restore","Restore XOSL 1.1.7",1);
 	TextUI.AddMenuItem(6,"Return to restore menu","Return to restore menu",1);
 	TextUI.SetItemIndex(0);
 	TextUI.RefreshMenu();
@@ -243,8 +246,8 @@ void CInstallMenus::InitFixMbrSep(CTextList::TListItemExecute MenuHandler, void 
 	TextUI.ConnectEventHandler(MenuHandler,HandlerClass);
 
 	TextUI.ClearMenu();
-	TextUI.AddMenuItem(0,"Drv Type System              Size ","Partition XOSL is currently installed on",1,PartNameCount,(const char **)PartNameList,0);
-	TextUI.AddMenuItem(6,"Start restore","Restore XOSL 1.1.5",1);
+	TextUI.AddMenuItem(0,"Drv Type System           Size ","Partition XOSL is currently installed on",1,PartNameCount,(const char **)PartNameList,0);
+	TextUI.AddMenuItem(6,"Start restore","Restore XOSL 1.1.7",1);
 	TextUI.AddMenuItem(8,"Return to upgrade menu","Return to upgrade menu",1);
 	TextUI.SetItemIndex(0);
 	TextUI.RefreshMenu();
@@ -258,12 +261,18 @@ void CInstallMenus::CreateDosDriveList()
 	int *Buffer;
 
 	DosDriveCount = Data.GetLastDrive() - ('C' - 'A');
-	DosDriveList = new char *[DosDriveCount];
-	Buffer = new int[DosDriveCount];
-	for (Index = 0; Index < DosDriveCount; ++Index) {
-		Buffer[Index] = Index + 'C';
-		DosDriveList[Index] = (char *)&Buffer[Index];
+	
+	if (DosDriveCount > 0) {
+		DosDriveList = new char *[DosDriveCount];
+		Buffer = new int[DosDriveCount];
+		for (Index = 0; Index < DosDriveCount; ++Index) {
+			Buffer[Index] = Index + 'C';
+			DosDriveList[Index] = (char *)&Buffer[Index];
+		}
+	} else {
+		DosDriveList = (char *) 0;
 	}
+	
 }
 
 void CInstallMenus::CreatePartList()
@@ -297,7 +306,7 @@ void CInstallMenus::CreatePartList()
 						PartStr[2] = '0' + (Partition->Drive & ~0x80);
 						MemCopy(&PartStr[4],Partition->Type == PART_PRIMARY ? "pri" : "log",3);
 						MemCopy(&PartStr[9],Partition->FSName,strlen(Partition->FSName));
-						itoa(Partition->SectorCount >> 11,&PartStr[29],10);
+						ultoa(Partition->SectorCount >> 11,&PartStr[26],10);
 						PartNameList[PartNameCount++] = PartStr;
 						break;
 				}

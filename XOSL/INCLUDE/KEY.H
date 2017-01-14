@@ -67,14 +67,15 @@
 #include <newdefs.h>
 #include <../keyboard/keylist.h>
 		 
-#define KEY_COUNT 316
+// #define KEY_COUNT 316 // seems risky
+#define KEY_COUNT 512 // seems less risky
 		 
 class CKeyboard {
 public:
 	CKeyboard();
 	~CKeyboard();
 
-	enum TKeyLayout { enumLayoutUS = 0, enumLayoutFrench = 1};
+	enum TKeyLayout { enumLayoutUS = 0, enumLayoutFrench = 1, enumLayoutGR = 2};
 	
 	static unsigned short WaitKeyStroke();
 	static void StoreKeyStroke(unsigned short KeyCode);
@@ -91,6 +92,7 @@ public:
 private:
 	static const CKeyDesc USKeyList[KEY_COUNT];
 	static const CKeyDesc FrenchKeyList[KEY_COUNT];
+	static const CKeyDesc GRKeyList[KEY_COUNT];
 
 	static const CKeyDesc *SelectedLayout;
 

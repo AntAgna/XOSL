@@ -1,118 +1,269 @@
-; EnableA20/DisableA20 code is take from Ranish Partition Manager 2.38 Beta 1.9
-		.code
-		
-;		public	_EnableA20
-;		public	_DisableA20
-		
+;
+; Extended Operating System Loader (XOSL)
+;
+; This code is distributed under GNU General Public License (GPL)
+;
+; The full text of the license can be found in the GPL.TXT file,
+; or at http://www.gnu.org
+;
 
-_EnableA20	proc	near
+; A20 Implementation borrowed (slighly modified) from
+;       http://eliteinformatiker.de/2015/10/17/die-a20-line-aktivieren
+; which itself has been done along the lines of
+;       http://wiki.osdev.org/A20_Line
 
-		call	A20wait_write
-		jc	@@Eerror
+; All credit and criticism goes to these two sites... ;-)
 
-		cli			; Only need for reading value from KBC
-		mov	al, 0D0h
-		out	64h, al
-		call	A20wait_read
-		jc	@@Eenable_int
+                .model  compact
+                .386p
+                .code
+                                
+                public  _EnableA20
+                public  _DisableA20
 
-		in	al, 60h		; Get current status
-		mov	ah, al
-		call	A20wait_write
-@@Eenable_int:	sti
-		jc	@@Eerror
+                
+; Returns AX ==1 if A20 is active, and AX == 0 if A20 is inactive
+; see http://wiki.osdev.org/A20_Line#Testing_the_A20_line
 
-		mov	al, 0D1h	; Tell the KBC we want to write to the
-		out	64h, al		; Out Put Port next
-		call	A20wait_write
-		jc	@@Eerror
+; Precondition: Interrupts are already disabled (cli) by the enclosing _EnableA20/_DisableA20
 
-		mov	al, ah
-		or	al, 2			; Enable line A20
-		out	60h, al
-		call	A20wait_write
-		jc	@@Eerror
+a20_active:
+                pushf
+                push ds
+                push es
+                push di
+                push si
 
-		mov	al, 0FFh		; NOP
-		out	64h, al
-		call	A20wait_write
-@@Eerror:
-		ret
-		endp
+                xor ax, ax                  ; ax = 0
+                mov es, ax
 
-_DisableA20	proc	near
+                not ax                      ; ax = 0xffff
+                mov ds, ax
+                
+                mov di, 0500h
+                mov si, 0510h
 
-		call	A20wait_write
-		jc	@@Derror
+                mov al, byte [es:di]        ; save the old values from memory
+                push ax
+                
+                mov al, byte [ds:si]
+                push ax
 
-		cli			; Only need for reading value from KBC
-		mov	al, 0D0h
-		out	64h, al
-		call	A20wait_read
-		jc	@@Denable_int
+                mov byte ptr [es:di], 00h   ; write 0x00 to one and 0xff to the other location
+                mov byte ptr [ds:si], 0ffh
+                
+                cmp byte ptr [es:di], 0ffh  ; check if the address we set to 0x00 was
+                                            ; set to 0xff later, then we have only 20 bit
+                                            ; addresses
+                
+                pop ax                      ; restore the bytes we set before
+                mov byte ptr [ds:si], al
+                
+                pop ax
+                mov byte ptr [es:di], al
+                
+                mov ax, 0
+                je a20_active_end
+                mov ax, 1
 
-		in	al, 60h
-		mov	ah, al
-		call	A20wait_write
-@@Denable_int:	sti
-		jc	@@Derror
+a20_active_end:
+                pop si
+                pop di
+                pop es
+                pop ds
+                popf
+                ret
 
-		mov	al, 0D1h
-		out	64h, al
-		call	A20wait_write
-		jc	@@Derror
+a20_wait_inbuf:
+                in al, 64h
+                test al, 2
+                jnz a20_wait_inbuf
+                ret
 
-		mov	al, ah
-		and	al, 0FDh		; Disable line A20
-		out	60h, al
-		call	A20wait_write
-		jc	@@Derror
-
-		mov	al, 0FFh
-		out	64h, al
-		call	A20wait_write
-@@Derror:
-		ret
-		endp
-		
-
-
-A20wait_write	proc	near
-
-	; Waits until the Input register is empty or until a short amount
-	; of time has elapsed. It waits till bit 1 of the KBC Read Status
-
-		xor	cx, cx		; Reasonable wait
-@@Wagain:
- 		in	al, 64h		; Get KBC read status
-		test	al, 02		; See if buffer empty, bit 1 clear
-		jz	@@Wclear
-		inc	cx
-		jnc	@@Wagain
-		ret
-@@Wclear:
- 		clc
- 		ret
-
-A20wait_write	endp
+a20_wait_outbuf:
+                in al, 64h
+                test al, 1
+                jz a20_wait_outbuf
+                ret
 
 
-A20wait_read	proc	near
+; A20 Enable                
+    
+_EnableA20      proc far
 
-	; Waits until the Read Status Port, 64h, contains data by checking the state
-	; of bit 0. It waits till it is set or too much time has gone by.
-		xor	cx, cx
-@@Ragain:
- 		in	al, 64h
-		test	al, 01		; If the 'output buffer' is full, has
-		jnz	@@Rclear		; something for me
-		inc	cx
-		jnc	@@Ragain
-		ret
-@@Rclear:
-		clc
-		ret
+a20_enable:
+                cli
+                call a20_stop_if_active
+                jnz a20e_done
 
-A20wait_read	endp
+a20e_bios:
+                mov ax, 2401h
+                int 15h
 
-		end
+                call a20_stop_if_active
+                jnz a20e_done
+
+a20e_keyboard:
+                call a20_wait_inbuf         ; disable the keyboard
+                mov al, 0adh
+                out 64h, al
+                
+                call a20_wait_inbuf         ; tell the controller we want to read data
+                mov al, 0d0h
+                out 64h, al
+                
+                call a20_wait_outbuf        ; read the P2 port provided by the controller
+                in al, 60h
+                push ax
+
+                call a20_wait_inbuf         ; tell the controller we want to write data
+                mov al, 0d1h
+                out 64h, al
+                
+                call a20_wait_inbuf         ; write the new P2 port with A20 line active
+                pop ax
+                or al, 2
+                out 60h, al
+
+                call a20_wait_inbuf         ; re-enable the keyboard
+                mov al, 0aeh
+                out 64h, al
+
+                call a20_wait_inbuf
+
+                call a20_stop_if_active_loop
+                jnz a20e_done
+
+a20e_fast:
+                in al, 92h
+                test al, 2
+                jnz a20e_fast_done          ; A20 Fast Gate is already activated
+                or al, 2
+                and al, 0feh
+                out 92h, al
+    
+a20e_fast_done: call a20_stop_if_active_loop
+                jnz a20e_done
+
+                hlt                         ; what should we do here?
+
+a20e_done:
+                sti
+                
+_EnableA20      endp
+
+
+; non-zero, i.e. ZF == 0 means A20 is active
+                
+a20_stop_if_active:
+                call a20_active
+                test ax, ax                 ; check if all bits are 0, then ZF = 1
+                ret
+
+a20_stop_if_active_loop:                    ; try in a loop if a20 is active for k times
+                mov bx, 0ffh
+a20_stop_if_active_loop_iterator:
+                dec bx
+                call a20_stop_if_active
+                test ax, ax
+                jnz a20_stop_if_active_loop_exit
+
+                test bx, bx                 ; check if bx 0
+                jnz a20_stop_if_active_loop_iterator
+
+a20_stop_if_active_loop_exit:                
+                ret
+
+
+
+
+
+_DisableA20     proc far
+
+a20_disable:
+                cli
+                call a20_stop_if_inactive
+                jz a20d_done
+
+a20d_bios:
+                mov ax, 2400h
+                int 15h
+
+                call a20_stop_if_inactive
+                jz a20d_done
+
+a20d_keyboard:
+                call a20_wait_inbuf         ; disable the keyboard
+                mov al, 0adh
+                out 64h, al
+                
+                call a20_wait_inbuf         ; tell the controller we want to read data
+                mov al, 0d0h
+                out 64h, al
+                
+                call a20_wait_outbuf        ; read the P2 port provided by the controller
+                in al, 60h
+                push ax
+
+                call a20_wait_inbuf         ; tell the controller we want to write data
+                mov al, 0d1h
+                out 64h, al
+                
+                call a20_wait_inbuf         ; write the new P2 port with A20 line inactive
+                pop ax
+                and al, 0fdh
+                out 60h, al
+
+                call a20_wait_inbuf         ; re-enable the keyboard
+                mov al, 0aeh
+                out 64h, al
+
+                call a20_wait_inbuf
+
+                call a20_stop_if_inactive_loop
+                jz a20d_done
+
+a20d_fast:
+                in al, 92h
+                and al, 2
+                test al, 2
+                jz a20d_fast_done           ; A20 Fast Gate is already deactivated
+                ; and al, 0fdh
+                ; and al, 0feh
+                and al, 0fch
+                out 92h, al
+    
+a20d_fast_done: call a20_stop_if_inactive_loop
+                jz a20d_done
+
+                hlt                         ; what should we do here?
+
+a20d_done:
+                sti
+
+_DisableA20     endp
+
+
+; zero, i.e. ZF == 1 means A20 is inactive
+                
+a20_stop_if_inactive:
+                call a20_active
+                test ax, ax                 ; check if all bits are 0, then ZF = 1
+                ret
+
+a20_stop_if_inactive_loop:                  ; try in a loop if a20 is active for k times
+                mov bx, 0ffh
+a20_stop_if_inactive_loop_iterator:
+                dec bx
+                call a20_stop_if_inactive
+                test ax, ax
+                jz a20_stop_if_inactive_loop_exit
+
+                test bx, bx                 ; check if bx 0
+                jz a20_stop_if_inactive_loop_iterator
+
+a20_stop_if_inactive_loop_exit:
+                ret
+
+
+                end

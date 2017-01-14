@@ -48,13 +48,22 @@ void printf(const char *format, ...)
 					case 'l':
 						if (format[1] == 'd') {
 							++format;
-							itoa(*(unsigned long *)argl++,buf,DEC);
+							ltoa(*(long *)argl++,buf,DEC);
+							argl +=2;
+							PutS(buf);
+							break;
+						}
+						if (format[1] == 'u') {
+							++format;
+							ultoa(*(unsigned long *)argl,buf,DEC);
+							argl +=2;
 							PutS(buf);
 							break;
 						}
 						if (format[1] == 'x') {
 							++format;
-							itoa(*(unsigned long *)argl++,buf,HEX);
+							ltoa(*(long *)argl,buf,HEX);
+							argl +=2;
 							PutS(buf);
 							break;
 						}

@@ -70,16 +70,16 @@ class CFAT32: public CFileSystem {
 	public:
 		CFAT32();
 		~CFAT32();
-		int Mount(int Drive, long StartSector);
+		int Mount(int Drive, unsigned long StartSector);
 		unsigned short ReadFile(const char *FileName, void *Buffer);
-		int WriteFile(const char *FileName, const void *Buffer);
+		int WriteFile(const char *FileName, void *Buffer);
 	private:
 		int Locate(const char *FileName, TFAT32DirEntry &Entry);
 		void ReadFAT(long Cluster);
 
 		void GetNextCluster(long &Cluster);
 		void ReadCluster(long Cluster, void *Buffer);
-		void WriteCluster(long Cluster, const void *Buffer);
+		void WriteCluster(long Cluster, void *Buffer);
 
 
 		TBootFAT32 BootSector;

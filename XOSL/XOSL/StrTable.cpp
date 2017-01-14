@@ -3,9 +3,9 @@
 
 CLoaderStringTable CXoslStringTable::Loader = {
 	"Extended Operating System Loader",
-	"XOSL version 1.1.5",
-	"Copyright \xa9 1999/2000, Geurt Vos",
-	"http://www.xosl.org",
+	"XOSL version 1.1.7",
+	"Copyright \xa9 1999-2017, Geurt Vos",
+	"http://groups.yahoo.com/xosl",
 	"Choose OS",
 	"Boot error",
 	"Boot",

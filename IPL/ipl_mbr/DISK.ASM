@@ -28,7 +28,7 @@
                 .code
                 public  ReadSectors
 
-;int ReadSectors(long Sector, void *Buffer, int Count)
+;int ReadSectors(unsigned long Sector, void *Buffer, int Count)
 ReadSectors     proc
                 push    bp
                 mov     bp,sp

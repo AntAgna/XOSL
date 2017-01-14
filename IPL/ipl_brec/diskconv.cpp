@@ -18,14 +18,14 @@
 //static void Sector2CHS(long RSector, unsigned short &SectCyl, unsigned short &DrvHead);
 
 
-void DiskMap(int DriveToUse, long StartSectorToUse)
+void DiskMap(int DriveToUse, unsigned long StartSectorToUse)
 {
 	Drive = DriveToUse;
 	StartSector = StartSectorToUse;
 	GetDriveInfo(DriveToUse);
 }
 
-void DiskRead(long Sector, void *Buffer, int Count)
+void DiskRead(unsigned long Sector, void *Buffer, int Count)
 {
 	unsigned short SectCyl, DrvHead;
 

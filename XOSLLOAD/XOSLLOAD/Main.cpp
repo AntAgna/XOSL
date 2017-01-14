@@ -34,7 +34,7 @@
 typedef struct {
 	int Drive;
 	int FSType;
-	long StartSector;
+	unsigned long StartSector;
 } TMountPart;
 
 // address where XOSL expects to find which partition it is located on.
@@ -71,7 +71,7 @@ _extern void CPPMain()
 	void *ImageData;
 	TExeHeader *ExeHeader = (TExeHeader *)&HeaderData[2];
 
-	PutS("\r\nExtended Operating System Loader 1.1.5\r\n\n");
+	PutS("\r\nExtended Operating System Loader 1.1.7\r\n\n");
 	if (BypassRequest())
 		CriticalError(NULL);
 

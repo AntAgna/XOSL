@@ -311,6 +311,7 @@ void CApplication::DestroyCoreClasses()
 	delete Screen;
 	delete Graph;
 	delete Mouse;
+	delete StringTable;  //Xosl115 did not delete StringTable.
 }
 
 void CApplication::InitializeCore()

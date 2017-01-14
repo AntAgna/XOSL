@@ -19,8 +19,8 @@
 
 #include <transfer.h>
 
-void DiskMap(int DriveToUse, long StartSectorToUse);
-void DiskRead(long Sector, void *Buffer, int Count);
+void DiskMap(int DriveToUse, unsigned long StartSectorToUse);
+void DiskRead(unsigned long Sector, void *Buffer, int Count);
 
 
 #endif

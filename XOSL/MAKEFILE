@@ -10,7 +10,7 @@ MAKE_OPTIONS=-DDOS_DEBUG
 
 LINK_OPTIONS=/3 /s /L$(LIBPATH)
 
-OBJ_FILES=misc\starter.obj
+OBJ_FILES=misc\starter.obj misc\a20line.obj
 EXE_FILE=xosl.exe
 MAP_FILE=xosl.map
 
@@ -125,3 +125,4 @@ clean:
    $(LEAVE)
    @del xosl.exe
    @del xosl.map
+   @del xoslimg?.xxf

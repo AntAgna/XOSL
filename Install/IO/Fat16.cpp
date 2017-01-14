@@ -77,7 +77,7 @@ unsigned short CFAT16::ReadFile(const char *FileName, void *Buffer)
 	return Entry.FileSize;
 }
 
-int CFAT16::WriteFile(const char *FileName, const void *Buffer)
+int CFAT16::WriteFile(const char *FileName, void *Buffer)
 {
 	unsigned short Cluster;
 	CFAT16DirEntry Entry;
@@ -87,7 +87,7 @@ int CFAT16::WriteFile(const char *FileName, const void *Buffer)
 	if (Entry.FileSize) {
 		for (Cluster = Entry.StartCluster; Cluster != 0xffff; GetNextCluster(Cluster)) {
 			WriteCluster(Cluster,Buffer);
-			(const char *)Buffer += ClusterSize;
+			Buffer = (char *)Buffer + ClusterSize;
 		}
 	}
 	return 0;
@@ -152,7 +152,7 @@ void CFAT16::ReadCluster(unsigned short Cluster, void *Buffer)
 	Disk.Read(Sector,Buffer,BootSector.ClusterSize);
 }
 
-void CFAT16::WriteCluster(unsigned short Cluster, const void *Buffer)
+void CFAT16::WriteCluster(unsigned short Cluster, void *Buffer)
 {
 	unsigned long Sector;
 

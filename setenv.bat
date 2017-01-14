@@ -1,0 +1,5 @@
+@ECHO OFF
+SET MAKEDIR=C:\BC31\BIN
+SET PATH=%MAKEDIR%;%PATH%
+
+echo Environment set.

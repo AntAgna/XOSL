@@ -30,11 +30,11 @@ static const char *InstallWarning =
 "Press any key to continue...";
 
 const char InstallNotes[] =
-"Extended Operating System Loader 1.1.5\n"
+"Extended Operating System Loader 1.1.7\n"
 "\n"
 "Make sure you have read NOTES.TXT!\n"
 "\n"
-"Before installling XOSL 1.1.5, it is\n"
+"Before installling XOSL 1.1.7, it is\n"
 "highly recommended you first read the\n"
 "installation walkthrough, found in the\n"
 "manual/install directroy\n"
@@ -46,7 +46,7 @@ const char InstallNotes[] =
 void main()
 {
 	puts("XOSL INSTALL UTILITY");
-	puts("Copyright (c) 1999/2000, Geurt Vos");
+	puts("Copyright (c) 1999-2017, Geurt Vos");
 	
 	CApplication *Application = new CApplication;
 	Application->ApplicationLoop();

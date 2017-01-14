@@ -66,8 +66,9 @@ void CMouseSettings::InitializeControls(CTabControl *TabControl)
 	MouseBox->AddItem("PS/2");
 	MouseBox->AddItem("None");
 
-	LayoutList->AddItem("French");
-	LayoutList->AddItem("United States");
+	LayoutList->AddItem("French (AZERTY)");
+	LayoutList->AddItem("English (QWERTY)");
+	LayoutList->AddItem("German (QWERTZ)");
 
 }
 
@@ -109,6 +110,9 @@ void CMouseSettings::InitKbdLayout(int Layout)
 			break;
 		case CKeyboard::enumLayoutUS:
 			Index = 1;
+			break;
+		case CKeyboard::enumLayoutGR:
+			Index = 2;
 			break;
 		default:
 			Index = 1;
@@ -235,6 +239,9 @@ void CMouseSettings::KbdLayoutSelect(CMouseSettings &MouseSettings, int ItemInde
 			break;
 		case 1: // US
 			Layout = CKeyboard::enumLayoutUS;
+			break;
+		case 2: // German
+			Layout = CKeyboard::enumLayoutGR;
 			break;
 		default:
 			return;
