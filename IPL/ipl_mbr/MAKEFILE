@@ -1,0 +1,41 @@
+#
+#makefile for IPL to load XOSL
+#
+#IPL06 - Initial Program Loader for Filsystem type 06 (==FAT16)
+#IPL0B - Initial Program Loader for Filsystem type 0b (==FAT32)
+#IPL06LBA - Initial Program Loader for Filsystem type 06 (==FAT16)
+#IPL0BLBA - Initial Program Loader for Filsystem type 0b (==FAT32)
+#
+
+BINPATH=$(MAKEDIR)
+
+ASM_OPTIONS=/mx
+LINK_OPTIONS=/3 /s /t
+
+ASM = $(BINPATH)\tasm $(ASM_OPTIONS)
+LINK = $(BINPATH)\tlink $(LINK_OPTIONS)
+
+all: ipl06.bin ipl0b.bin ipl06lba.bin ipl0blba.bin
+
+ipl06.bin: mainfat.obj disk.obj fat16.obj mem.obj data16.obj
+        $(LINK) mainfat disk fat16 mem data16, ipl06.bin
+
+ipl0b.bin: mainfat.obj disk.obj fat32.obj mem.obj data32.obj
+        $(LINK) mainfat disk fat32 mem data32, ipl0b.bin
+
+ipl06lba.bin: mainfat.obj disklba.obj fat16.obj mem.obj dt16lba.obj
+        $(LINK) mainfat disklba fat16 mem dt16lba, ipl06lba.bin
+
+ipl0blba.bin: mainfat.obj disklba.obj fat32.obj mem.obj dt32lba.obj
+        $(LINK) mainfat disklba fat32 mem dt32lba, ipl0blba.bin
+
+
+clean:
+        @if exist *.obj del *.obj
+        @if exist *.bak del *.bak
+        @if exist *.map del *.map
+        @if exist *.bin del *.bin
+
+.asm.obj:
+        $(ASM) $<
+

@@ -1,0 +1,23 @@
+C_OPTIONS=-O2 -mc -3 -c -d -j6 -I.
+ASM_OPTIONS=/mx /m3
+LINK_OPTIONS=/3 /s
+
+C=$(MAKEDIR)\bcc $(C_OPTIONS)
+ASM=$(MAKEDIR)\tasm $(ASM_OPTIONS)
+LINK=$(MAKEDIR)\tlink $(LINK_OPTIONS)
+
+split.exe: starter.obj split.obj io.obj
+        $(LINK) starter split io, split.exe
+
+clean:
+        @del *.obj
+        @del *.bak
+        @del *.map
+        @del *.exe
+
+.c.obj:
+        $(C) $<
+
+.asm.obj:
+        $(ASM) $<
+

@@ -1,0 +1,44 @@
+
+CONV_OUT=ipls.bin
+LBA_OUT=iplslba.bin
+
+CONV_OBJ=starter.obj main.obj transfer.obj diskconv.obj mem.obj convfill.obj
+LBA_OBJ=starter.obj main.obj lbatrans.obj disklba.obj mem.obj lbafill.obj
+
+CONV_MAP=ipls.map
+LBA_MAP=iplslba.map
+
+
+INCPATH=.
+
+CPP_OPTIONS=-O2 -mc -3 -c -d -j6 -I$(INCPATH)
+ASM_OPTIONS=/mx /m3
+LINK_OPTIONS=/t /3 /s
+
+
+CPP=$(MAKEDIR)\bcc $(CPP_OPTIONS)
+ASM=$(MAKEDIR)\tasm $(ASM_OPTIONS)
+LINK=$(MAKEDIR)\tlink $(LINK_OPTIONS)
+
+
+all: $(CONV_OUT) $(LBA_OUT)
+
+clean:
+   @if exist *.obj del *.obj
+   @if exist *.bak del *.bak
+   @if exist *.bin del *.bin
+   @if exist *.map del *.map
+
+$(CONV_OUT): $(CONV_OBJ)
+    $(LINK) $(CONV_OBJ), $(CONV_OUT), $(CONV_MAP)
+
+$(LBA_OUT): $(LBA_OBJ)
+    $(LINK) $(LBA_OBJ), $(LBA_OUT), $(LBA_MAP)
+
+
+.cpp.obj:
+   $(CPP) $<
+
+.asm.obj:
+   $(ASM) $<
+

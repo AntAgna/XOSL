@@ -1,0 +1,127 @@
+#main makefile for XOSL
+
+LIBPATH=xosl;gui;graph;text;mmu;string;io;mouse;misc;keyboard;timer;debug;quit
+LIB_FILES=xosl.lib mmu.lib timer.lib mouse.lib gui.lib graph.lib text.lib \
+          string.lib io.lib misc.lib keyboard.lib quit.lib debug.lib
+
+!ifdef DOS_DEBUG
+MAKE_OPTIONS=-DDOS_DEBUG
+!endif
+
+LINK_OPTIONS=/3 /s /L$(LIBPATH)
+
+OBJ_FILES=misc\starter.obj
+EXE_FILE=xosl.exe
+MAP_FILE=xosl.map
+
+LINK=$(MAKEDIR)\tlink
+MAKE=$(MAKEDIR)\make $(MAKE_OPTIONS)
+
+ENTER=@cd
+LEAVE=$(ENTER) ..
+
+all: xosl gui graph text mmu string io mouse misc keyboard timer quit debug 
+   $(LINK) @&&!
+         $(LINK_OPTIONS) $(OBJ_FILES), $(EXE_FILE), $(MAP_FILE), $(LIB_FILES)
+!
+
+link:
+   $(LINK) @&&!
+         $(LINK_OPTIONS) $(OBJ_FILES), $(EXE_FILE), $(MAP_FILE), $(LIB_FILES)
+!
+
+xosl:
+   $(ENTER) xosl
+   $(MAKE)
+   $(LEAVE)
+
+misc:
+   $(ENTER) misc
+   $(MAKE)
+   $(LEAVE)
+
+gui:
+   $(ENTER) gui
+   $(MAKE)
+   $(LEAVE)
+
+graph:
+   $(ENTER) graph
+   $(MAKE)
+   $(LEAVE)
+
+text:
+   $(ENTER) text
+   $(MAKE)
+   $(LEAVE)
+
+mmu:
+   $(ENTER) mmu
+   $(MAKE)
+   $(LEAVE)
+
+string:
+   $(ENTER) string
+   $(MAKE)
+   $(LEAVE)
+
+io:
+   $(ENTER) io
+   $(MAKE)
+   $(LEAVE)
+
+mouse:
+   $(ENTER) mouse
+   $(MAKE)
+   $(LEAVE)
+
+keyboard:
+   $(ENTER) keyboard
+   $(MAKE)
+   $(LEAVE)
+
+timer:
+   $(ENTER) timer
+   $(MAKE)
+   $(LEAVE)
+
+quit:
+   $(ENTER) quit
+   $(MAKE)
+   $(LEAVE)
+
+debug:
+   $(ENTER) debug
+   $(MAKE)
+   $(LEAVE)
+
+clean:
+   $(ENTER) xosl
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\misc
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\gui
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\graph
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\text
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\mmu
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\string
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\io
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\mouse
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\keyboard
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\timer
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\quit
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\debug
+   $(MAKEDIR)\make clean
+   $(LEAVE)
+   @del xosl.exe
+   @del xosl.map

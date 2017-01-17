@@ -1,0 +1,114 @@
+#main makefile for INSTALL.EXE
+
+LIBPATH=install;io;mouse;vesa;ui;keyboard;text;string
+LIB_FILES=install.lib io.lib mouse.lib string.lib\
+          vesa.lib ui.lib keyboard.lib text.lib cc.lib
+
+!ifdef DOS_DEBUG
+MAKE_OPTIONS=-DDOS_DEBUG
+!endif
+
+MAKEROOT=$(MAKEDIR)\..
+
+LINK_OPTIONS=/3 /s /L$(LIBPATH);$(MAKEROOT)\lib
+
+OBJ_FILES=$(MAKEROOT)\lib\C0C.obj
+LNK_FILE=install.exe
+MAP_FILE=install.map
+
+LINK=$(MAKEDIR)\tlink
+MAKE=$(MAKEDIR)\make $(MAKE_OPTIONS)
+
+ENTER=@cd
+LEAVE=$(ENTER) ..
+
+all: $(LNK_FILE)
+
+
+$(LNK_FILE): install io mouse vesa ui keyboard text string
+   $(LINK) @&&!
+         $(LINK_OPTIONS) $(OBJ_FILES), $(LNK_FILE), $(MAP_FILE), $(LIB_FILES)
+!
+
+link:
+   $(LINK) @&&!
+         $(LINK_OPTIONS) $(OBJ_FILES), $(LNK_FILE), $(MAP_FILE), $(LIB_FILES)
+!
+
+
+install:
+   $(ENTER) install
+   $(MAKE)
+   $(LEAVE)
+
+mmu:
+   $(ENTER) mmu
+   $(MAKE)
+   $(LEAVE)
+
+io:
+   $(ENTER) io
+   $(MAKE)
+   $(LEAVE)
+
+mouse:
+   $(ENTER) mouse
+   $(MAKE)
+   $(LEAVE)
+
+string:
+   $(ENTER) string
+   $(MAKE)
+   $(LEAVE)
+
+vesa:
+   $(ENTER) vesa
+   $(MAKE)
+   $(LEAVE)
+
+misc:
+   $(ENTER) misc
+   $(MAKE)
+   $(LEAVE)
+
+ui:
+   $(ENTER) ui
+   $(MAKE)
+   $(LEAVE)
+
+keyboard:
+   $(ENTER) keyboard
+   $(MAKE)
+   $(LEAVE)
+
+text:
+   $(ENTER) text
+   $(MAKE)
+   $(LEAVE)
+
+
+clean:
+   $(ENTER) install
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\mmu
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\io
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\mouse
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\string
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\vesa
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\misc
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\ui
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\keyboard
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\text
+   $(MAKEDIR)\make clean
+   $(LEAVE)
+   @del install.exe
+   @del install.map
+

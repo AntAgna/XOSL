@@ -1,0 +1,53 @@
+PLEASE READ THE FOLLOWING NOTES CAREFULLY, BEFORE INSTALLING XOSL
+
+Extended Operating System Loader comes with ABSOLUTELY NO WARRANTY, it
+is destributed under the terms of the GNU General Public License (GPL).
+The full license can be found in the GPL.TXT file.
+
+1. 'Easy upgrade' is not support. XOSL 1.1.5 will have to be completely
+reinstalled from scratch.
+
+2. If you have any other version installed, it is recommened
+to uninstall it before installing XOSL 1.1.5 To perform a 
+quick uninstall, execute 'fdisk /mbr'.
+
+3. It is strongly recommended to install XOSL from a floppy. 
+Particularily when you plan to install XOSL to a dedicated partition.
+This way you will always have a backup of the data overwritten
+(provided the floppy doesn't contain errors :)
+
+4. With XOSL comes Ranish Partition Manager, written by Mikhail
+Ranish. Note that certain circumstances exist where it is not
+free to use. Refer to http://www.ranish.com/part for the details.
+
+5. With XOSL comes Smart Boot Manager (SBM). It is destributed 
+under the terms of the GNU GPL. XOSL use SBM to indirectly 
+support booting from CD-ROM. The CD-ROM booting howto can be
+found in the manual/cdrom folder. The manual to SBM can be 
+found in the manual/sbm folder. SBM can be found at 
+http://btmgr.sourceforge.net. When an update of SBM is available,
+and you want to install it, you will have to replace SBMINST.EXE,
+as found in this distribution, with the new one, and completely 
+reinstall XOSL.
+
+-- NOTES ON INSTALLATION ON DOS DRIVE --
+
+...
+
+-- NOTES ON INSTALLATION ON DEDICATED PARTITION --
+
+1. You have to create a partition for XOSL yourself, BEFORE you
+run install. The XOSL install utility does not create a partition
+for you.
+
+2. Select the partition you want to install XOSL onto carefully.
+ALL DATA ON THE SELECTED PARTITION WILL BE DESTROYED! Although 
+install provides an uninstall option, which can completely restore
+the partition data, you should NEVER rely on such features.
+
+3. If you install from floppy (recommended), make sure that floppy
+has at least 712kb (729088 byte) of free disk space BEFORE you run
+install (and after you have copied the XOSL install files to the 
+floppy). If you don't install Ranish Partition Manager, only 584kb 
+(598016 byte) of free disk space is required.
+

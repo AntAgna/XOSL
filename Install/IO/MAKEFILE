@@ -1,0 +1,53 @@
+#
+# IO library specific stuff
+#
+
+COMPILE_OBJ=dosio.obj dosint.obj transfer.obj lbatrans.obj serialno.obj \
+            dosdrv.obj disk.obj ptab.obj fs.obj fat16.obj
+LIB_NAME=io.lib
+LIST_FILE=io.lst
+LIB_OBJ=-+dosio.obj -+dosint.obj -+transfer.obj -+lbatrans.obj \
+        -+serialno.obj -+dosdrv.obj -+disk.obj -+ptab.obj -+fs.obj -+fat16.obj
+
+#
+# Generic library stuff
+#
+
+INCPATH=..\include;.;$(MAKEDIR)\..\include
+
+CPP_OPTIONS=-O2 -mc -3 -c -d -j6 -I$(INCPATH)
+C_OPTIONS=-O2 -mc -3 -c -d -j6 -I$(INCPATH)
+ASM_OPTIONS=/mx /m3
+LIB_OPTIONS=
+
+!ifdef DOS_DEBUG
+CPP_OPTIONS=$(CPP_OPTIONS) -DDOS_DEBUG
+C_OPTIONS=$(C_OPTIONS) -DDOS_DEBUG
+!endif
+
+
+CPP=$(MAKEDIR)\bcc $(CPP_OPTIONS)
+C=$(MAKEDIR)\bcc $(C_OPTIONS)
+ASM=$(MAKEDIR)\tasm $(ASM_OPTIONS)
+LIB=$(MAKEDIR)\tlib
+
+$(LIB_NAME): $(COMPILE_OBJ)
+   $(LIB) @&&!
+         $(LIB_NAME) $(LIB_OPTIONS) $(LIB_OBJ), $(LIST_FILE)
+!
+
+clean:
+   @del *.obj
+   @del *.bak
+   @del *.lib
+   @del *.lst
+
+.cpp.obj:
+   $(CPP) $<
+
+.c.obj:
+   $(C) $<
+
+.asm.obj:
+   $(ASM) $<
+

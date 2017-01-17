@@ -1,0 +1,78 @@
+#main makefile for xoslload.xcf
+
+LIBPATH=xoslload;mmu;io;string;text;misc
+LIB_FILES=xoslload.lib mmu.lib io.lib string.lib text.lib misc.lib
+          
+
+!ifdef DOS_DEBUG
+MAKE_OPTIONS=-DDOS_DEBUG
+!endif
+
+LINK_OPTIONS=/3 /s /t /L$(LIBPATH)
+
+OBJ_FILES=misc\starter.obj
+LNK_FILE=xoslload.xcf
+MAP_FILE=xoslload.map
+
+LINK=$(MAKEDIR)\tlink
+MAKE=$(MAKEDIR)\make $(MAKE_OPTIONS)
+
+ENTER=@cd
+LEAVE=$(ENTER) ..
+
+$(LNK_FILE): xoslload mmu io string text misc
+   $(LINK) @&&!
+         $(LINK_OPTIONS) $(OBJ_FILES), $(LNK_FILE), $(MAP_FILE), $(LIB_FILES)
+!
+
+link:
+   $(LINK) @&&!
+         $(LINK_OPTIONS) $(OBJ_FILES), $(LNK_FILE), $(MAP_FILE), $(LIB_FILES)
+!
+
+xoslload:
+   $(ENTER) xoslload
+   $(MAKE)
+   $(LEAVE)
+
+mmu:
+   $(ENTER) mmu
+   $(MAKE)
+   $(LEAVE)
+
+io:
+   $(ENTER) io
+   $(MAKE)
+   $(LEAVE)
+
+string:
+   $(ENTER) string
+   $(MAKE)
+   $(LEAVE)
+
+text:
+   $(ENTER) text
+   $(MAKE)
+   $(LEAVE)
+
+misc:
+   $(ENTER) misc
+   $(MAKE)
+   $(LEAVE)
+
+clean:
+   $(ENTER) xoslload
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\mmu
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\io
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\string
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\text
+   $(MAKEDIR)\make clean
+   $(ENTER) ..\misc
+   $(MAKEDIR)\make clean
+   $(LEAVE)
+   @del xoslload.xcf
+   @del xoslload.map
