@@ -30,11 +30,11 @@ static const char *InstallWarning =
 "Press any key to continue...";
 
 const char InstallNotes[] =
-"Extended Operating System Loader 1.1.7\n"
+"Extended Operating System Loader 1.1.8\n"
 "\n"
 "Make sure you have read NOTES.TXT!\n"
 "\n"
-"Before installling XOSL 1.1.7, it is\n"
+"Before installling XOSL 1.1.8, it is\n"
 "highly recommended you first read the\n"
 "installation walkthrough, found in the\n"
 "manual/install directroy\n"

@@ -63,27 +63,35 @@ typedef struct {
 
 
 typedef struct {
-	char IPL[436 - sizeof (TIPLData16Conv)];
+	unsigned char IPL[436 - sizeof (TIPLData16Conv)];
 	TIPLData16Conv IPLData;
-	char Reserved[10];
+	unsigned long Reserved1;
+	unsigned long PhysicalDriveSignature;
+	unsigned short Reserved2;
 } TIPLFAT16Conv;
 
 typedef struct {
-	char IPL[436 - sizeof (TIPLData32Conv)];
+	unsigned char IPL[436 - sizeof (TIPLData32Conv)];
 	TIPLData32Conv IPLData;
-	char Reserved[10];
+	unsigned long Reserved1;
+	unsigned long PhysicalDriveSignature;
+	unsigned short Reserved2;
 } TIPLFAT32Conv;
 
 typedef struct {
 	char IPL[436 - sizeof (TIPLData16LBA)];
 	TIPLData16LBA IPLData;
-	char Reserved[10];
+	unsigned long Reserved1;
+	unsigned long PhysicalDriveSignature;
+	unsigned short Reserved2;
 } TIPLFAT16LBA;
 
 typedef struct {
 	char IPL[436 - sizeof (TIPLData32LBA)];
 	TIPLData32LBA IPLData;
-	char Reserved[10];
+	unsigned long Reserved1;
+	unsigned long PhysicalDriveSignature;
+	unsigned short Reserved2;
 } TIPLFAT32LBA;
 
 

@@ -35,8 +35,6 @@ int CFatInstall::CreateIpl(const CDosDriveList::CDosDrive &DosDrive, TIPL &Ipl)
 	int UseLba;
 
 	TextUI.OutputStr("Initializing IPL...");
-	// clear the 10 'reserved' bytes
-	MemSet(Ipl.IPLFAT16Conv.Reserved,0,10);
 
 	UseLba = DiskAccess.LBAAccessAvail(DosDrive.Drive) == 0;
 	if (DosDrive.FATType == FATTYPE_FAT16)
@@ -76,8 +74,8 @@ int CFatInstall::CreateIplFat16(const CDosDriveList::CDosDrive &DosDrive, int Us
 	Fat16Ipl.IPLData.ClusterSectSize = Fat16.ClusterSize;
 	Fat16Ipl.IPLData.ClusterByteSize = (unsigned short)Fat16.ClusterSize << 9;
 	Fat16Ipl.IPLData.FATStart = Fat16.ReservedSectors;
-	Fat16Ipl.IPLData.DirStart = (long)Fat16.ReservedSectors + (long)Fat16.FATCopies * (long)Fat16.FATSize;
-	Fat16Ipl.IPLData.DataStart = (long)Fat16Ipl.IPLData.DirStart + (long)Fat16.RootEntries / 16;
+	Fat16Ipl.IPLData.DirStart = (unsigned long)Fat16.ReservedSectors + (unsigned long)Fat16.FATCopies * (unsigned long)Fat16.FATSize;
+	Fat16Ipl.IPLData.DataStart = (unsigned long)Fat16Ipl.IPLData.DirStart + (unsigned long)Fat16.RootEntries / 16;
 
 	Fat16Ipl.IPLData.FSType = 0x06;
 	Fat16Ipl.IPLData.DriveNumber = DosDrive.Drive;
@@ -92,7 +90,7 @@ int CFatInstall::CreateIplFat32(const CDosDriveList::CDosDrive &DosDrive, int Us
 	TBootFAT32 Fat32;
 	const char *IplFile;
 	int fh;
-	long FATSize;
+	unsigned long FATSize;
 	CDisk Disk;
 
 	Disk.Map(DosDrive.Drive,DosDrive.StartSector);
@@ -117,8 +115,8 @@ int CFatInstall::CreateIplFat32(const CDosDriveList::CDosDrive &DosDrive, int Us
 	Fat32Ipl.IPLData.ClusterSectSize = Fat32.ClusterSize;
 	Fat32Ipl.IPLData.ClusterByteSize = (unsigned short)Fat32.ClusterSize << 9;
 	Fat32Ipl.IPLData.FATStart = Fat32.ReservedSectors;
-	FATSize = Fat32.FATSize ? Fat32.FATSize : Fat32.BigFATSize;
-	Fat32Ipl.IPLData.DataStart = (long)Fat32.ReservedSectors + (long)Fat32.FATCopies * FATSize;
+	FATSize = Fat32.BigFATSize;
+	Fat32Ipl.IPLData.DataStart = (unsigned long)Fat32.ReservedSectors + (unsigned long)Fat32.FATCopies * FATSize;
 	Fat32Ipl.IPLData.RootCluster = Fat32.RootCluster;
 
 	Fat32Ipl.IPLData.FSType = 0x0b;
@@ -178,7 +176,7 @@ int CFatInstall::InstallIpl(void *Ipl)
 		TextUI.OutputStr("failed\nUnable to read MBR");
 		return -1;
 	}
-	MemCopy(Mbr,Ipl,446);
+	MemCopy(Mbr,Ipl,436);
 	if (Disk.Write(0,Mbr,1) == -1) {
 		Disk.Unlock();
 		TextUI.OutputStr("failed\nUnable to write to MBR");
