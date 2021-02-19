@@ -149,7 +149,8 @@ a20e_fast_done: call a20_stop_if_active_loop
 
 a20e_done:
                 sti
-                
+		ret
+
 _EnableA20      endp
 
 
@@ -169,7 +170,7 @@ a20_stop_if_active_loop_iterator:
                 jnz a20_stop_if_active_loop_exit
 
                 test bx, bx                 ; check if bx 0
-                jnz a20_stop_if_active_loop_iterator
+		jnz a20_stop_if_active_loop_iterator
 
 a20_stop_if_active_loop_exit:                
                 ret
@@ -189,7 +190,7 @@ a20d_bios:
                 mov ax, 2400h
                 int 15h
 
-                call a20_stop_if_inactive
+		call a20_stop_if_inactive
                 jz a20d_done
 
 a20d_keyboard:
@@ -209,7 +210,7 @@ a20d_keyboard:
                 mov al, 0d1h
                 out 64h, al
                 
-                call a20_wait_inbuf         ; write the new P2 port with A20 line inactive
+		call a20_wait_inbuf         ; write the new P2 port with A20 line inactive
                 pop ax
                 and al, 0fdh
                 out 60h, al
@@ -227,19 +228,20 @@ a20d_fast:
                 in al, 92h
                 and al, 2
                 test al, 2
-                jz a20d_fast_done           ; A20 Fast Gate is already deactivated
-                ; and al, 0fdh
-                ; and al, 0feh
-                and al, 0fch
-                out 92h, al
-    
-a20d_fast_done: call a20_stop_if_inactive_loop
-                jz a20d_done
+		jz a20d_fast_done           ; A20 Fast Gate is already deactivated
+		; and al, 0fdh
+		; and al, 0feh
+		and al, 0fch
+		out 92h, al
 
-                hlt                         ; what should we do here?
+a20d_fast_done: call a20_stop_if_inactive_loop
+		jz a20d_done
+
+		hlt                         ; what should we do here?
 
 a20d_done:
-                sti
+		sti
+		ret
 
 _DisableA20     endp
 
@@ -247,9 +249,9 @@ _DisableA20     endp
 ; zero, i.e. ZF == 1 means A20 is inactive
                 
 a20_stop_if_inactive:
-                call a20_active
+		call a20_active
                 test ax, ax                 ; check if all bits are 0, then ZF = 1
-                ret
+		ret
 
 a20_stop_if_inactive_loop:                  ; try in a loop if a20 is active for k times
                 mov bx, 0ffh
