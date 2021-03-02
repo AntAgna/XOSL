@@ -149,7 +149,8 @@ a20e_fast_done: call a20_stop_if_active_loop
 
 a20e_done:
                 sti
-                
+                ret
+
 _EnableA20      endp
 
 
@@ -240,6 +241,7 @@ a20d_fast_done: call a20_stop_if_inactive_loop
 
 a20d_done:
                 sti
+                ret
 
 _DisableA20     endp
 
