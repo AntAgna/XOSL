@@ -18,7 +18,7 @@ HourSec         dd      3600
                 public  @ResetTimer$qv
 
 ;void ResetTimer()
-@ResetTimer$qv  proc
+@ResetTimer$qv  proc far
                 push    bp
                 mov     bp,5
 
